@@ -1,10 +1,7 @@
 package com.snapp.expense_tracker.user.domin;
 
-public class UsernameAlreadyExistedException extends RuntimeException {
-    public UsernameAlreadyExistedException() {
-    }
+import com.snapp.expense_tracker.common.exception.BadRequestException;
 
-    public UsernameAlreadyExistedException(String message) {
-        super(message);
-    }
+public class UsernameAlreadyExistedException extends BadRequestException {
+
 }
