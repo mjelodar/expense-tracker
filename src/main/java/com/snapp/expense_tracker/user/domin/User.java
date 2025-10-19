@@ -1,10 +1,11 @@
 package com.snapp.expense_tracker.user.domin;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table
-public class User {
+class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,6 +16,10 @@ public class User {
 
     @NotBlank
     private String password;
+
+    private String firstName;
+
+    private String surname;
 
     public void setId(Long id) {
         this.id = id;
