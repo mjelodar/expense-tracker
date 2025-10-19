@@ -30,6 +30,13 @@
 		<java.version>25</java.version>
 		<spring-modulith.version>1.4.3</spring-modulith.version>
 	</properties>
+    <modules>
+        <module>src/main/java/com/snapp/expense_tracker/common</module>
+        <module>src/main/java/com/snapp/expense_tracker/user</module>
+        <module>src/main/java/com/snapp/expense_tracker/cost</module>
+        <module>src/main/java/com/snapp/expense_tracker/notification</module>
+        <module>src/main/java/com/snapp/expense_tracker/report</module>
+    </modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.modulith</groupId>
