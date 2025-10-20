@@ -4,6 +4,7 @@ import com.snapp.expense_tracker.user.UserService;
 import com.snapp.expense_tracker.user.model.CreateUserRequest;
 import com.snapp.expense_tracker.user.model.LoginRequest;
 import com.snapp.expense_tracker.user.model.LoginResponse;
+import com.snapp.expense_tracker.user.util.JWTUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,9 @@ class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        return null;
+        User user = userRepository.findByUsername(request.username()).orElseThrow(BadCredentialsException::new);
+        if (!passwordEncoder.matches(request.password(), user.getPassword()))
+            throw new BadCredentialsException();
+        return new LoginResponse(JWTUtil.generateToken(user.getUsername(), user.getId(), 10000000000L));
     }
 }
