@@ -26,3 +26,10 @@ spring:
     table: _flyway_schema_history
     baseline-on-migrate: true
     baseline-version: 1
+
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
