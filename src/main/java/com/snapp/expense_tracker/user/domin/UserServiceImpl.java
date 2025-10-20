@@ -2,6 +2,8 @@ package com.snapp.expense_tracker.user.domin;
 
 import com.snapp.expense_tracker.user.UserService;
 import com.snapp.expense_tracker.user.model.CreateUserRequest;
+import com.snapp.expense_tracker.user.model.LoginRequest;
+import com.snapp.expense_tracker.user.model.LoginResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(CreateUserRequest request) {
+    public void create(CreateUserRequest request) {
         if (userRepository.existsByUsername(request.username())) {
             throw new UsernameAlreadyExistedException();
         }
@@ -30,5 +32,10 @@ class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
 
         userRepository.save(user);
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        return null;
     }
 }

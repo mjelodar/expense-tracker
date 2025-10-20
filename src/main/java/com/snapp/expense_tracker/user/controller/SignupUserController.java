@@ -16,6 +16,6 @@ public class SignupUserController {
 
     @PostMapping("/api/auth/signup")
     public void handle(@RequestBody CreateUserRequest request){
-        userService.createUser(request);
+        userService.create(request);
     }
 }
