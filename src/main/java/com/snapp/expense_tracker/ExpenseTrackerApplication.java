@@ -2,11 +2,11 @@ package com.snapp.expense_tracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EntityScan(basePackages = {
-        "com.snapp.expense_tracker.user.domain",
-        "com.snapp.expense_tracker.cost.domain"
+        "com.snapp.expense_tracker.*"
 })
 public class ExpenseTrackerApplication {
 
