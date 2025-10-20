@@ -4,12 +4,11 @@ public class RestApiException extends RuntimeException {
     private String message;
     private String error;
     private String path;
-    private String status;
+    private Integer statusCode;
     private String details;
-    private Integer code;
 
-    public RestApiException(Integer code) {
-        this.code = code;
+    public RestApiException(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
     @Override
@@ -37,14 +36,6 @@ public class RestApiException extends RuntimeException {
         this.path = path;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getDetails() {
         return details;
     }
@@ -53,11 +44,11 @@ public class RestApiException extends RuntimeException {
         this.details = details;
     }
 
-    public Integer getCode() {
-        return code;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 }
