@@ -1,7 +1,6 @@
 package com.snapp.expense_tracker.lookup.domain;
 
 import com.snapp.expense_tracker.lookup.LookupService;
-import com.snapp.expense_tracker.lookup.model.SearchCategoryRequest;
 import com.snapp.expense_tracker.lookup.model.SearchCategoryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +19,16 @@ public class LookupServiceImpl implements LookupService {
     }
 
     @Override
-    public List<SearchCategoryResponse> searchCategory(SearchCategoryRequest request) {
-        if (request.text() == null || request.text().isEmpty()) {
-            return expenseCategoryRepository.findAll().
-                    stream().
-                    map(expenseCategory -> new SearchCategoryResponse(expenseCategory.getId(), expenseCategory.getCategory())).
-                    toList();
+    public List<SearchCategoryResponse> searchCategory(String categoryName) {
+        List<ExpenseCategory> expenseCategories;
+        if (categoryName == null || categoryName.isEmpty()) {
+            expenseCategories = expenseCategoryRepository.findAll();
         } else {
-
+            expenseCategories = expenseCategoryRepository.findByCategoryContainingIgnoreCase(request.text());
         }
-        return null;
+        return expenseCategories.
+                stream().
+                map(expenseCategory -> new SearchCategoryResponse(expenseCategory.getId(), expenseCategory.getCategory())).
+                toList();
     }
 }
