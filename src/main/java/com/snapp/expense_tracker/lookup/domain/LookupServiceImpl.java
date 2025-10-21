@@ -24,7 +24,7 @@ public class LookupServiceImpl implements LookupService {
         if (categoryName == null || categoryName.isEmpty()) {
             expenseCategories = expenseCategoryRepository.findAll();
         } else {
-            expenseCategories = expenseCategoryRepository.findByCategoryContainingIgnoreCase(request.text());
+            expenseCategories = expenseCategoryRepository.findByCategoryContainingIgnoreCase(categoryName);
         }
         return expenseCategories.
                 stream().

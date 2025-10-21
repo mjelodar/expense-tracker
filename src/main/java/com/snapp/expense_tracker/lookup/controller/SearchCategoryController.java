@@ -17,7 +17,7 @@ public class SearchCategoryController {
     }
 
     @GetMapping("/api/lookup/category/search")
-    public List<SearchCategoryResponse> handle(@RequestParam String categoryName) {
-        return lookupService.searchCategory(categoryName);
+    public List<SearchCategoryResponse> handle(@RequestParam String text) {
+        return lookupService.searchCategory(text);
     }
 }
