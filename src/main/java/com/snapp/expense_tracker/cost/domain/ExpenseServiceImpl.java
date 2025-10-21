@@ -23,6 +23,16 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setSubcategoryId(request.subCategoryId());
         expense.setSubcategoryName(request.subCategoryName());
         expense.setUserId(SecurityUtil.getUserId());
+        expense.setCost(request.amount());
         expenseRepository.save(expense);
+    }
+
+    @Override
+    public void deleteExpense(Long id) {
+        expenseRepository.findById(id).ifPresent(expense -> {
+            if (expense.getUserId().equals(SecurityUtil.getUserId())) {
+                expenseRepository.delete(expense);
+            }
+        });
     }
 }

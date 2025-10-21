@@ -1,8 +1,7 @@
 package com.snapp.expense_tracker.cost.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +9,11 @@ import java.time.LocalDateTime;
 @Table
 public class Expense {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime createdAt;
+
+    @CreatedDate
+    private LocalDateTime createdAt = LocalDateTime.now();
     private Long categoryId;
     private String categoryName;
     private Long subcategoryId;
