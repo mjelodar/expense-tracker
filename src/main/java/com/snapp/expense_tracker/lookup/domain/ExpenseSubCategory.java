@@ -11,8 +11,9 @@ public class ExpenseSubCategory {
 
     private String subCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ExpenseSubCategory category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private ExpenseCategory category;
 
     public Long getId() {
         return id;
@@ -30,11 +31,11 @@ public class ExpenseSubCategory {
         this.subCategory = subCategory;
     }
 
-    public ExpenseSubCategory getCategory() {
+    public ExpenseCategory getCategory() {
         return category;
     }
 
-    public void setCategory(ExpenseSubCategory category) {
+    public void setCategory(ExpenseCategory category) {
         this.category = category;
     }
 }

@@ -20,7 +20,7 @@ public class SearchSubCategoryController {
 
     @GetMapping("/api/lookup/subcategory/search/{categoryId}")
     public List<SearchSubCategoryResponse> handle(@PathVariable Long categoryId,
-                                                  @RequestParam String text) {
+                                                  @RequestParam(required = false) String text) {
         return lookupService.searchSubCategory(categoryId, text);
     }
 }
