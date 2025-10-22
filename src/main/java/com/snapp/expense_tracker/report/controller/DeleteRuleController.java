@@ -1,7 +1,6 @@
 package com.snapp.expense_tracker.report.controller;
 
-import com.snapp.expense_tracker.report.domain.RuleService;
-import com.snapp.expense_tracker.report.model.AddRuleRequest;
+import com.snapp.expense_tracker.report.service.RuleService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

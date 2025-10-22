@@ -1,8 +1,7 @@
 package com.snapp.expense_tracker.report.controller;
 
 import com.snapp.expense_tracker.common.util.SecurityUtil;
-import com.snapp.expense_tracker.report.domain.RuleService;
-import com.snapp.expense_tracker.report.model.AddRuleRequest;
+import com.snapp.expense_tracker.report.service.RuleService;
 import com.snapp.expense_tracker.report.model.GetRuleRequest;
 import com.snapp.expense_tracker.report.model.RuleView;
 import org.springframework.data.domain.Page;

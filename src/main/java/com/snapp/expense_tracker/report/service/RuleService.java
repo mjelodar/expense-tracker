@@ -1,8 +1,10 @@
-package com.snapp.expense_tracker.report.domain;
+package com.snapp.expense_tracker.report.service;
 
 import com.snapp.expense_tracker.common.enums.NotificationType;
 import com.snapp.expense_tracker.common.event.RuleMetEvent;
 import com.snapp.expense_tracker.common.util.SecurityUtil;
+import com.snapp.expense_tracker.report.domain.Rule;
+import com.snapp.expense_tracker.report.repository.RuleRepository;
 import com.snapp.expense_tracker.report.model.AddRuleRequest;
 import com.snapp.expense_tracker.report.model.GetRuleRequest;
 import com.snapp.expense_tracker.report.model.RuleView;
@@ -11,10 +13,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Transactional
@@ -67,7 +67,7 @@ public class RuleService {
         ruleRepository.save(rule);
     }
 
-    void sendNotification(Rule rule) {
+    public void sendNotification(Rule rule) {
         if (!rule.isNotified())
             switch (rule.getOperator()) {
                 case GRATER_THAN, GREATER_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
@@ -85,7 +85,7 @@ public class RuleService {
             }
     }
 
-    void updateExpirationDate(Rule rule) {
+    public void updateExpirationDate(Rule rule) {
         switch (rule.getTimeUnit()) {
             case DAY -> {
                 while (rule.getExpirationAt().isBefore(LocalDateTime.now())) {
@@ -110,7 +110,7 @@ public class RuleService {
         }
     }
 
-    boolean updateCost(Rule rule, Double currentCost, Double amount) {
+    public boolean updateCost(Rule rule, Double currentCost, Double amount) {
         rule.setCost(currentCost + amount);
         if (rule.getCost() >= rule.getThresholdCost() && !rule.isNotified()) {
             rule.setNotified(true);

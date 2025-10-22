@@ -1,6 +1,7 @@
-package com.snapp.expense_tracker.report.domain;
+package com.snapp.expense_tracker.report.repository;
 
 import com.snapp.expense_tracker.common.enums.TimeUnit;
+import com.snapp.expense_tracker.report.domain.Rule;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

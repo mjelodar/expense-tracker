@@ -1,6 +1,8 @@
-package com.snapp.expense_tracker.report.domain;
+package com.snapp.expense_tracker.report.scheduler;
 
 import com.snapp.expense_tracker.common.enums.TimeUnit;
+import com.snapp.expense_tracker.report.repository.RuleRepository;
+import com.snapp.expense_tracker.report.service.RuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

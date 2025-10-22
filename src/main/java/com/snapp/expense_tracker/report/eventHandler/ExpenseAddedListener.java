@@ -1,6 +1,10 @@
-package com.snapp.expense_tracker.report.domain;
+package com.snapp.expense_tracker.report.eventHandler;
 
 import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
+import com.snapp.expense_tracker.report.domain.Rule;
+import com.snapp.expense_tracker.report.exception.RuleNotFoundException;
+import com.snapp.expense_tracker.report.repository.RuleRepository;
+import com.snapp.expense_tracker.report.service.RuleService;
 import org.jmolecules.event.annotation.DomainEventHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
