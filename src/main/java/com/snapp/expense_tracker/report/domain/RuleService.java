@@ -4,12 +4,17 @@ import com.snapp.expense_tracker.common.enums.NotificationType;
 import com.snapp.expense_tracker.common.event.RuleMetEvent;
 import com.snapp.expense_tracker.common.util.SecurityUtil;
 import com.snapp.expense_tracker.report.model.AddRuleRequest;
+import com.snapp.expense_tracker.report.model.GetRuleRequest;
+import com.snapp.expense_tracker.report.model.RuleView;
+import com.snapp.expense_tracker.report.model.mapper.RuleViewMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -46,6 +51,11 @@ public class RuleService {
                 ruleRepository.deleteById(id);
             }
         });
+    }
+
+    public Page<RuleView> get(GetRuleRequest request) {
+        return ruleRepository.findByUserId(request.getUserId(), request.getPageable()).
+                map(RuleViewMapper::toView);
     }
 
     public void notifyExpiredRule(Rule rule) {
