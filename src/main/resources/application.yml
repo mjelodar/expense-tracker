@@ -27,6 +27,14 @@ spring:
     baseline-on-migrate: true
     baseline-version: 1
 
+  modulith:
+    events:
+      externalization:
+        enabled: true
+      jdbc:
+        schema: expense_tracker
+        table: events
+        transactional: true
 
 springdoc:
   api-docs:
