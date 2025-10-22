@@ -2,17 +2,22 @@ package com.snapp.expense_tracker.report.domain;
 
 import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
 import org.jmolecules.event.annotation.DomainEventHandler;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 
 @Component
 public class ExpenseAddedListener {
     private final RuleRepository ruleRepository;
+    private final ApplicationEventPublisher publisher;
 
-    public ExpenseAddedListener(RuleRepository ruleRepository) {
+    public ExpenseAddedListener(RuleRepository ruleRepository,
+                                ApplicationEventPublisher publisher) {
         this.ruleRepository = ruleRepository;
+        this.publisher = publisher;
     }
     @DomainEventHandler
     public void onExpenseAdded(ExpenseAddedEvent event) {
@@ -27,7 +32,12 @@ public class ExpenseAddedListener {
             updateCost(rule, rule.getCost(), event.amount());
         }
         ruleRepository.save(rule);
-        if (rule.getCost() >)
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                sendNotification(rule);
+            }
+        });
     }
 
     private void updateExpirationDate(Rule rule) {
@@ -57,5 +67,14 @@ public class ExpenseAddedListener {
 
     private void updateCost(Rule rule, Double currentCost, Double amount) {
         rule.setCost(currentCost + amount);
+    }
+
+    private void sendNotification(Rule rule) {
+        switch (rule.getOperator()){
+            case GRATER_THAN -> {
+                if (rule.getCost() > rule.getThresholdCost())
+                    publisher.publishEvent();
+            }
+        }
     }
 }
