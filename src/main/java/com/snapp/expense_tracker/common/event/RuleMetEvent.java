@@ -5,7 +5,7 @@ import com.snapp.expense_tracker.common.enums.NotificationType;
 public record RuleMetEvent(Long userId,
                            NotificationType notificationType,
                            Long ruleId,
-                           Long noOfRepeat,
+                           String description,
                            String categoryName,
                            String subcategoryName) {}
 

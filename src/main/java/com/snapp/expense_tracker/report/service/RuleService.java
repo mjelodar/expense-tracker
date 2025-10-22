@@ -73,13 +73,13 @@ public class RuleService {
                 case GRATER_THAN, GREATER_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
                         NotificationType.PASS_RULE_UNSUCCESSFULLY,
                         rule.getId(),
-                        rule.getNoOfRepeats(),
+                        rule.getDescription(),
                         rule.getCategoryName(),
                         rule.getSubcategoryName()));
                 case LESS_THAN, LESS_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
                         NotificationType.PASS_RULE_SUCCESSFULLY,
                         rule.getId(),
-                        rule.getNoOfRepeats(),
+                        rule.getDescription(),
                         rule.getCategoryName(),
                         rule.getSubcategoryName()));
             }
