@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 
 @Component
 public class ExpenseAddedListener {
+    private final RuleService ruleService;
     private final RuleRepository ruleRepository;
-    private final ApplicationEventPublisher publisher;
 
-    public ExpenseAddedListener(RuleRepository ruleRepository,
-                                ApplicationEventPublisher publisher) {
+    public ExpenseAddedListener(RuleService ruleService, RuleRepository ruleRepository) {
+        this.ruleService = ruleService;
         this.ruleRepository = ruleRepository;
-        this.publisher = publisher;
     }
+
     @DomainEventHandler
     public void onExpenseAdded(ExpenseAddedEvent event) {
         Rule rule = ruleRepository.findByUserIdAndCategoryIdAndSubcategoryId(event.userId(),
@@ -28,7 +28,7 @@ public class ExpenseAddedListener {
                 event.subcategoryId()).orElseThrow(RuleNotFoundException::new);
         boolean isThresholdMet;
         if (rule.getExpirationAt().isAfter(LocalDateTime.now())){
-            updateExpirationDate(rule);
+            ruleService.updateExpirationDate(rule);
             isThresholdMet = updateCost(rule, 0d, event.amount());
         }else {
             isThresholdMet = updateCost(rule, rule.getCost(), event.amount());
@@ -38,34 +38,9 @@ public class ExpenseAddedListener {
             @Override
             public void afterCommit() {
                 if (isThresholdMet)
-                    sendNotification(rule);
+                    ruleService.sendNotification(rule);
             }
         });
-    }
-
-    private void updateExpirationDate(Rule rule) {
-        switch (rule.getTimeUnit()){
-            case DAY -> {
-                while (rule.getExpirationAt().isBefore(LocalDateTime.now())) {
-                    rule.setExpirationAt(rule.getExpirationAt().plusDays(rule.getTimePeriod()));
-                }
-            }
-            case WEEK -> {
-                while (rule.getExpirationAt().isBefore(LocalDateTime.now())) {
-                    rule.setExpirationAt(rule.getExpirationAt().plusWeeks(rule.getTimePeriod()));
-                }
-            }
-            case MONTH -> {
-                while (rule.getExpirationAt().isBefore(LocalDateTime.now())) {
-                    rule.setExpirationAt(rule.getExpirationAt().plusMonths(rule.getTimePeriod()));
-                }
-            }
-            case YEAR -> {
-                while (rule.getExpirationAt().isBefore(LocalDateTime.now())) {
-                    rule.setExpirationAt(rule.getExpirationAt().plusYears(rule.getTimePeriod()));
-                }
-            }
-        }
     }
 
     private boolean updateCost(Rule rule, Double currentCost, Double amount) {
@@ -77,23 +52,5 @@ public class ExpenseAddedListener {
         return false;
     }
 
-    private void sendNotification(Rule rule) {
-        switch (rule.getOperator()){
-            case GRATER_THAN, GREATER_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
-                        NotificationType.PASS_RULE_UNSUCCESSFULLY,
-                        rule.getId(),
-                        rule.getNoOfRepeats(),
-                        rule.getCategoryName(),
-                        rule.getSubcategoryName()));
-            case LESS_THAN, LESS_EQUAL_THAN -> {
-                if (rule.getCost() <= rule.getThresholdCost())
-                    publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
-                            NotificationType.PASS_RULE_SUCCESSFULLY,
-                            rule.getId(),
-                            rule.getNoOfRepeats(),
-                            rule.getCategoryName(),
-                            rule.getSubcategoryName()));
-            }
-        }
-    }
+
 }
