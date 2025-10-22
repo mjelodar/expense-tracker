@@ -1,6 +1,8 @@
 package com.snapp.expense_tracker.report.domain;
 
+import com.snapp.expense_tracker.common.enums.NotificationType;
 import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
+import com.snapp.expense_tracker.common.event.RuleMetEvent;
 import org.jmolecules.event.annotation.DomainEventHandler;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -24,18 +26,19 @@ public class ExpenseAddedListener {
         Rule rule = ruleRepository.findByUserIdAndCategoryIdAndSubcategoryId(event.userId(),
                 event.categoryId(),
                 event.subcategoryId()).orElseThrow(RuleNotFoundException::new);
-
+        boolean isThresholdMet;
         if (rule.getExpirationAt().isAfter(LocalDateTime.now())){
             updateExpirationDate(rule);
-            updateCost(rule, 0d, event.amount());
+            isThresholdMet = updateCost(rule, 0d, event.amount());
         }else {
-            updateCost(rule, rule.getCost(), event.amount());
+            isThresholdMet = updateCost(rule, rule.getCost(), event.amount());
         }
         ruleRepository.save(rule);
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
             public void afterCommit() {
-                sendNotification(rule);
+                if (isThresholdMet)
+                    sendNotification(rule);
             }
         });
     }
@@ -65,15 +68,31 @@ public class ExpenseAddedListener {
         }
     }
 
-    private void updateCost(Rule rule, Double currentCost, Double amount) {
+    private boolean updateCost(Rule rule, Double currentCost, Double amount) {
         rule.setCost(currentCost + amount);
+        if (rule.getCost() >= rule.getThresholdCost() && !rule.isNotified()){
+            rule.setNotified(true);
+            return true;
+        }
+        return false;
     }
 
     private void sendNotification(Rule rule) {
         switch (rule.getOperator()){
-            case GRATER_THAN -> {
-                if (rule.getCost() > rule.getThresholdCost())
-                    publisher.publishEvent();
+            case GRATER_THAN, GREATER_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
+                        NotificationType.PASS_RULE_UNSUCCESSFULLY,
+                        rule.getId(),
+                        rule.getNoOfRepeats(),
+                        rule.getCategoryName(),
+                        rule.getSubcategoryName()));
+            case LESS_THAN, LESS_EQUAL_THAN -> {
+                if (rule.getCost() <= rule.getThresholdCost())
+                    publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
+                            NotificationType.PASS_RULE_SUCCESSFULLY,
+                            rule.getId(),
+                            rule.getNoOfRepeats(),
+                            rule.getCategoryName(),
+                            rule.getSubcategoryName()));
             }
         }
     }

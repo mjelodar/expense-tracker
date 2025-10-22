@@ -65,6 +65,8 @@ public class Rule {
     @Column(name = "no_of_repeats")
     private Long noOfRepeats;
 
+    @Column(name = "is_notified")
+    private boolean notified;
 
     public void setId(Long id) {
         this.id = id;
@@ -200,5 +202,13 @@ public class Rule {
 
     public void setNoOfRepeats(Long noOfRepeats) {
         this.noOfRepeats = noOfRepeats;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 }
