@@ -1,6 +1,6 @@
 package com.snapp.expense_tracker.cost.domain;
 
-import com.snapp.expense_tracker.common.event.ExpenseAdded;
+import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
 import com.snapp.expense_tracker.cost.ExpenseService;
 import com.snapp.expense_tracker.cost.model.AddExpenseRequest;
 import com.snapp.expense_tracker.cost.util.SecurityUtil;
@@ -36,7 +36,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
             public void afterCommit() {
-                publisher.publishEvent(new ExpenseAdded(userId,
+                publisher.publishEvent(new ExpenseAddedEvent(userId,
                         request.categoryId(),
                         request.categoryName(),
                         request.subCategoryId(),

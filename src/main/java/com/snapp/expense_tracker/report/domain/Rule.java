@@ -21,6 +21,9 @@ public class Rule {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Version
+    private Long version;
+
     @Column(name = "description")
     private String description;
 
@@ -59,8 +62,9 @@ public class Rule {
     @Column(name = "threshold_cost")
     private Double thresholdCost;
 
-    @Column(name = "auto_renewal")
-    private Boolean autoRenewal;
+    @Column(name = "no_of_repeats")
+    private Long noOfRepeats;
+
 
     public void setId(Long id) {
         this.id = id;
@@ -182,11 +186,19 @@ public class Rule {
         this.thresholdCost = thresholdCost;
     }
 
-    public Boolean getAutoRenewal() {
-        return autoRenewal;
+    public Long getVersion() {
+        return version;
     }
 
-    public void setAutoRenewal(Boolean autoRenewal) {
-        this.autoRenewal = autoRenewal;
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Long getNoOfRepeats() {
+        return noOfRepeats;
+    }
+
+    public void setNoOfRepeats(Long noOfRepeats) {
+        this.noOfRepeats = noOfRepeats;
     }
 }
