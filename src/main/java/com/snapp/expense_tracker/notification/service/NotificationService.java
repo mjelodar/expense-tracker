@@ -1,5 +1,6 @@
 package com.snapp.expense_tracker.notification.service;
 
+import com.snapp.expense_tracker.common.util.SecurityUtil;
 import com.snapp.expense_tracker.notification.domain.Notification;
 import com.snapp.expense_tracker.notification.exception.NotificationNotFoundException;
 import com.snapp.expense_tracker.notification.model.GetNotificationRequest;
@@ -29,13 +30,13 @@ public class NotificationService {
     }
 
     public void seen(Long id) {
-        Notification notification = notificationRepository.findById(id).orElseThrow(NotificationNotFoundException::new);
+        Notification notification = notificationRepository.findByUserIdAndId(SecurityUtil.getUserId(), id).orElseThrow(NotificationNotFoundException::new);
         notification.setSeen(true);
         notificationRepository.save(notification);
     }
 
     public void unSeen(Long id) {
-        Notification notification = notificationRepository.findById(id).orElseThrow(NotificationNotFoundException::new);
+        Notification notification = notificationRepository.findByUserIdAndId(SecurityUtil.getUserId(), id).orElseThrow(NotificationNotFoundException::new);
         notification.setSeen(false);
         notificationRepository.save(notification);
     }
