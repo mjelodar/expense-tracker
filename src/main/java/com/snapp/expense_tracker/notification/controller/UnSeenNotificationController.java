@@ -13,7 +13,7 @@ public class UnSeenNotificationController {
         this.notificationService = notificationService;
     }
 
-    @PutMapping("api/notification/seen/{id}")
+    @PutMapping("api/notification/unseen/{id}")
     public void handle(@PathVariable Long id) {
         notificationService.unSeen(id);
     }
