@@ -3,7 +3,7 @@ package com.snapp.expense_tracker.cost.domain;
 import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
 import com.snapp.expense_tracker.cost.ExpenseService;
 import com.snapp.expense_tracker.cost.model.AddExpenseRequest;
-import com.snapp.expense_tracker.cost.util.SecurityUtil;
+import com.snapp.expense_tracker.common.util.SecurityUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

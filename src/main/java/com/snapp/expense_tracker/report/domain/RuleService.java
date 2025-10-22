@@ -2,6 +2,8 @@ package com.snapp.expense_tracker.report.domain;
 
 import com.snapp.expense_tracker.common.enums.NotificationType;
 import com.snapp.expense_tracker.common.event.RuleMetEvent;
+import com.snapp.expense_tracker.common.util.SecurityUtil;
+import com.snapp.expense_tracker.report.model.AddRuleRequest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,26 @@ public class RuleService {
         this.ruleRepository = ruleRepository;
         this.publisher = publisher;
     }
+
+    public void create(AddRuleRequest request) {
+        Rule rule = new Rule();
+        rule.setUserId(SecurityUtil.getUserId());
+        rule.setCategoryId(request.categoryId());
+        rule.setCategoryName(request.categoryName());
+        rule.setSubcategoryId(request.subcategoryId());
+        rule.setSubcategoryName(request.subcategoryName());
+        rule.setNoOfRepeats(0L);
+        rule.setCost(0d);
+        rule.setDescription(request.description());
+        rule.setTimeUnit(request.timeUnit());
+        rule.setTimePeriod(request.timePeriod());
+        rule.setThresholdCost(request.threshold());
+        rule.setOperator(request.operator());
+        updateExpirationDate(rule);
+        ruleRepository.save(rule);
+    }
+
+
 
     public void notifyExpiredRule(Rule rule) {
         if (rule.getCost() <= rule.getThresholdCost()) {
