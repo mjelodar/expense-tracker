@@ -5,7 +5,7 @@ import com.snapp.expense_tracker.report.model.RuleView;
 
 public class RuleViewMapper {
     public static RuleView toView(Rule rule) {
-        RuleView ruleView = new RuleView(rule.getDescription(),
+        return new RuleView(rule.getDescription(),
                 rule.getCategoryName(),
                 rule.getSubcategoryName(),
                 rule.getTimeUnit(),
