@@ -24,7 +24,9 @@ public class NotificationService {
                 map(NotificationMapper::toNotificationView);
     }
 
-    public
+    public Integer countOfUnseenNotifications(Long userId) {
+        return notificationRepository.countByUserIdAndSeen(userId, false);
+    }
 
     public void seen(Long id) {
         Notification notification = notificationRepository.findById(id).orElseThrow(NotificationNotFoundException::new);
