@@ -1,10 +1,7 @@
 package com.snapp.expense_tracker.report.domain;
 
-import com.snapp.expense_tracker.common.enums.NotificationType;
 import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
-import com.snapp.expense_tracker.common.event.RuleMetEvent;
 import org.jmolecules.event.annotation.DomainEventHandler;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -29,9 +26,9 @@ public class ExpenseAddedListener {
         boolean isThresholdMet;
         if (rule.getExpirationAt().isAfter(LocalDateTime.now())){
             ruleService.updateExpirationDate(rule);
-            isThresholdMet = updateCost(rule, 0d, event.amount());
+            isThresholdMet = ruleService.updateCost(rule, 0d, event.amount());
         }else {
-            isThresholdMet = updateCost(rule, rule.getCost(), event.amount());
+            isThresholdMet = ruleService.updateCost(rule, rule.getCost(), event.amount());
         }
         ruleRepository.save(rule);
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
@@ -42,15 +39,5 @@ public class ExpenseAddedListener {
             }
         });
     }
-
-    private boolean updateCost(Rule rule, Double currentCost, Double amount) {
-        rule.setCost(currentCost + amount);
-        if (rule.getCost() >= rule.getThresholdCost() && !rule.isNotified()){
-            rule.setNotified(true);
-            return true;
-        }
-        return false;
-    }
-
 
 }
