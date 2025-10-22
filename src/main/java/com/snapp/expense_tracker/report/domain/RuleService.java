@@ -7,6 +7,7 @@ import com.snapp.expense_tracker.report.model.AddRuleRequest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 
@@ -39,7 +40,13 @@ public class RuleService {
         ruleRepository.save(rule);
     }
 
-
+    public void delete(Long id){
+        ruleRepository.findById(id).ifPresent(rule -> {
+            if (!rule.getUserId().equals(SecurityUtil.getUserId())) {
+                ruleRepository.deleteById(id);
+            }
+        });
+    }
 
     public void notifyExpiredRule(Rule rule) {
         if (rule.getCost() <= rule.getThresholdCost()) {
