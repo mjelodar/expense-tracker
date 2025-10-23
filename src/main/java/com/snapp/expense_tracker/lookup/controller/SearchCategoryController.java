@@ -1,7 +1,7 @@
 package com.snapp.expense_tracker.lookup.controller;
 
-import com.snapp.expense_tracker.lookup.service.LookupService;
 import com.snapp.expense_tracker.lookup.model.SearchCategoryResponse;
+import com.snapp.expense_tracker.lookup.service.LookupService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
