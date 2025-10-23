@@ -47,3 +47,6 @@ logging:
     root: INFO
     org.springframework: info
     com.snapp: DEBUG
+    org.springframework.transaction: DEBUG
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
+    org.springframework.transaction.interceptor: DEBUG
