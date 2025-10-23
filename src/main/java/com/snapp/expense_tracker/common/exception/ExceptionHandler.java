@@ -7,7 +7,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+
+import java.util.List;
 
 
 @ControllerAdvice
@@ -16,10 +19,19 @@ public class ExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = RestApiException.class)
-    public ResponseEntity<ExceptionResponse> handleMyRestTemplateException(RestApiException ex, HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> handleMyRestTemplateException(RestApiException ex,
+                                                                           HttpServletRequest request) {
         logger.error("Exception", ex);
         ExceptionResponse response = makeRestExceptionResponse(ex, request);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    protected ResponseEntity<ExceptionResponse> handleException(Exception ex,
+                                                                HttpServletRequest request) {
+        logger.error("Exception", ex);
+        ExceptionResponse response = makeExceptionResponse(ex, request);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ExceptionResponse makeRestExceptionResponse(RestApiException exception,
@@ -32,6 +44,16 @@ public class ExceptionHandler {
         String errorClassName = getErrorClassName(exception);
         response.setError(errorClassName);
 
+        return response;
+    }
+
+    private ExceptionResponse makeExceptionResponse(Throwable throwable,
+                                                    HttpServletRequest request) {
+        ExceptionResponse response = new ExceptionResponse();
+        response.setError(getErrorClassName(throwable));
+        response.setPath(request.getRequestURI());
+        response.setLocale(LocaleContextHolder.getLocale().toString());
+        response.setMethod(request.getMethod());
         return response;
     }
 

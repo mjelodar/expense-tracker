@@ -41,6 +41,7 @@ public class RuleService {
         rule.setTimePeriod(request.timePeriod());
         rule.setThresholdCost(request.threshold());
         rule.setOperator(request.operator());
+        rule.setExpirationAt(LocalDateTime.now());
         updateExpirationDate(rule);
         ruleRepository.save(rule);
     }
@@ -70,7 +71,7 @@ public class RuleService {
     public void sendNotification(Rule rule) {
         if (!rule.isNotified())
             switch (rule.getOperator()) {
-                case GRATER_THAN, GREATER_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
+                case GREATER_THAN, GREATER_EQUAL_THAN -> publisher.publishEvent(new RuleMetEvent(rule.getUserId(),
                         NotificationType.PASS_RULE_UNSUCCESSFULLY,
                         rule.getId(),
                         rule.getDescription(),
