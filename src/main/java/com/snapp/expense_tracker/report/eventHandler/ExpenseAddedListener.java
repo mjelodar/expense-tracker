@@ -6,6 +6,7 @@ import com.snapp.expense_tracker.report.exception.RuleNotFoundException;
 import com.snapp.expense_tracker.report.repository.RuleRepository;
 import com.snapp.expense_tracker.report.service.RuleService;
 import org.jmolecules.event.annotation.DomainEventHandler;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -22,7 +23,7 @@ public class ExpenseAddedListener {
         this.ruleRepository = ruleRepository;
     }
 
-    @DomainEventHandler
+    @EventListener
     public void onExpenseAdded(ExpenseAddedEvent event) {
         Rule rule = ruleRepository.findByUserIdAndCategoryIdAndSubcategoryId(event.userId(),
                 event.categoryId(),

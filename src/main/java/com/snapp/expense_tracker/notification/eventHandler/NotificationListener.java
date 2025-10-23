@@ -4,6 +4,7 @@ import com.snapp.expense_tracker.common.event.RuleMetEvent;
 import com.snapp.expense_tracker.notification.domain.Notification;
 import com.snapp.expense_tracker.notification.repository.NotificationRepository;
 import org.jmolecules.event.annotation.DomainEventHandler;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 
@@ -15,7 +16,7 @@ public class NotificationListener {
         this.notificationRepository = notificationRepository;
     }
 
-    @DomainEventHandler
+    @EventListener
     public void onRuleMet(RuleMetEvent event) {
         Notification notification = new Notification();
         notification.setCategoryName(event.categoryName());
