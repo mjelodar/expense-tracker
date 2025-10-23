@@ -4,6 +4,7 @@ import com.snapp.expense_tracker.common.enums.NotificationType;
 import com.snapp.expense_tracker.common.event.RuleMetEvent;
 import com.snapp.expense_tracker.common.util.SecurityUtil;
 import com.snapp.expense_tracker.report.domain.Rule;
+import com.snapp.expense_tracker.report.exception.RuleNotFoundException;
 import com.snapp.expense_tracker.report.repository.RuleRepository;
 import com.snapp.expense_tracker.report.model.AddRuleRequest;
 import com.snapp.expense_tracker.report.model.GetRuleRequest;
@@ -87,6 +88,7 @@ public class RuleService {
     }
 
     public void updateExpirationDate(Rule rule) {
+        rule = ruleRepository.findById(rule.getId()).orElseThrow(RuleNotFoundException::new);
         switch (rule.getTimeUnit()) {
             case DAY -> {
                 while (rule.getExpirationAt().isBefore(LocalDateTime.now())) {
@@ -109,14 +111,13 @@ public class RuleService {
                 }
             }
         }
+        ruleRepository.save(rule);
     }
 
     public boolean updateCost(Rule rule, Double currentCost, Double amount) {
+        rule = ruleRepository.findById(rule.getId()).orElseThrow(RuleNotFoundException::new);
         rule.setCost(currentCost + amount);
-        if (rule.getCost() >= rule.getThresholdCost() && !rule.isNotified()) {
-            rule.setNotified(true);
-            return true;
-        }
-        return false;
+        ruleRepository.save(rule);
+        return rule.getCost() >= rule.getThresholdCost();
     }
 }

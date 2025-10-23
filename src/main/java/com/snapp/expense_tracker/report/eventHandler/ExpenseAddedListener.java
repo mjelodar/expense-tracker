@@ -7,7 +7,11 @@ import com.snapp.expense_tracker.report.repository.RuleRepository;
 import com.snapp.expense_tracker.report.service.RuleService;
 import org.jmolecules.event.annotation.DomainEventHandler;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -24,12 +28,14 @@ public class ExpenseAddedListener {
     }
 
     @EventListener
+    @Transactional
+    @Async
     public void onExpenseAdded(ExpenseAddedEvent event) {
         Rule rule = ruleRepository.findByUserIdAndCategoryIdAndSubcategoryId(event.userId(),
                 event.categoryId(),
                 event.subcategoryId()).orElseThrow(RuleNotFoundException::new);
         boolean isThresholdMet;
-        if (rule.getExpirationAt().isAfter(LocalDateTime.now())){
+        if (rule.getExpirationAt().isBefore(LocalDateTime.now())){
             ruleService.updateExpirationDate(rule);
             isThresholdMet = ruleService.updateCost(rule, 0d, event.amount());
         }else {
