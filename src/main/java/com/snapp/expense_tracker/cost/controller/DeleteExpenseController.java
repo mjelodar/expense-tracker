@@ -13,6 +13,6 @@ public class DeleteExpenseController {
 
     @DeleteMapping("/api/cost/expense/{id}")
     public void handle(@PathVariable Long id){
-        expenseService.deleteExpense(id);
+        expenseService.delete(id);
     }
 }
