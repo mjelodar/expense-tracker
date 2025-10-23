@@ -17,10 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       RefreshTokenService refreshTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public void create(CreateUserRequest request) {
@@ -41,6 +45,14 @@ public class UserService {
         User user = userRepository.findByUsername(request.username()).orElseThrow(BadCredentialsException::new);
         if (!passwordEncoder.matches(request.password(), user.getPassword()))
             throw new BadCredentialsException();
-        return new LoginResponse(JWTUtil.generateToken(user.getUsername(), user.getId(), 10000000000L));
+        long accessTokenTtl = 15 * 60 * 1000L; // 15 minutes
+        long refreshTokenTtl = 7 * 24 * 60 * 60 * 1000L; // 7 days
+
+        String accessToken = JWTUtil.generateToken(user.getUsername(), user.getId(), accessTokenTtl);
+        String refreshToken = JWTUtil.generateToken(user.getUsername(), user.getId(), refreshTokenTtl);
+
+        refreshTokenService.saveRefreshToken(user.getId(), refreshToken, refreshTokenTtl);
+
+        return new LoginResponse(accessToken, refreshToken);
     }
 }
