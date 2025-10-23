@@ -1,9 +1,10 @@
-package com.snapp.expense_tracker.cost.domain;
+package com.snapp.expense_tracker.cost.service;
 
 import com.snapp.expense_tracker.common.event.ExpenseAddedEvent;
-import com.snapp.expense_tracker.cost.ExpenseService;
+import com.snapp.expense_tracker.cost.domain.Expense;
 import com.snapp.expense_tracker.cost.model.AddExpenseRequest;
 import com.snapp.expense_tracker.common.util.SecurityUtil;
+import com.snapp.expense_tracker.cost.repository.ExpenseRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

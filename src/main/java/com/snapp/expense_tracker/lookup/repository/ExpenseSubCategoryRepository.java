@@ -1,5 +1,6 @@
-package com.snapp.expense_tracker.lookup.domain;
+package com.snapp.expense_tracker.lookup.repository;
 
+import com.snapp.expense_tracker.lookup.domain.ExpenseSubCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

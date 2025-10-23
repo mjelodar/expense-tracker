@@ -1,8 +1,11 @@
-package com.snapp.expense_tracker.lookup.domain;
+package com.snapp.expense_tracker.lookup.service;
 
-import com.snapp.expense_tracker.lookup.LookupService;
+import com.snapp.expense_tracker.lookup.domain.ExpenseCategory;
+import com.snapp.expense_tracker.lookup.domain.ExpenseSubCategory;
 import com.snapp.expense_tracker.lookup.model.SearchCategoryResponse;
 import com.snapp.expense_tracker.lookup.model.SearchSubCategoryResponse;
+import com.snapp.expense_tracker.lookup.repository.ExpenseCategoryRepository;
+import com.snapp.expense_tracker.lookup.repository.ExpenseSubCategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

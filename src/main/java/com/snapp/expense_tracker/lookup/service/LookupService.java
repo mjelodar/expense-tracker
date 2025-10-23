@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.lookup;
+package com.snapp.expense_tracker.lookup.service;
 
 import com.snapp.expense_tracker.lookup.model.SearchCategoryResponse;
 import com.snapp.expense_tracker.lookup.model.SearchSubCategoryResponse;

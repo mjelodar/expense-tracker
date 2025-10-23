@@ -1,7 +1,6 @@
 package com.snapp.expense_tracker.cost.controller;
 
-import com.snapp.expense_tracker.cost.ExpenseService;
-import com.snapp.expense_tracker.cost.model.AddExpenseRequest;
+import com.snapp.expense_tracker.cost.service.ExpenseService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

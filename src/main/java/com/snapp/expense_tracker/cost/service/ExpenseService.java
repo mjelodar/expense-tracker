@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.cost;
+package com.snapp.expense_tracker.cost.service;
 
 import com.snapp.expense_tracker.cost.model.AddExpenseRequest;
 
