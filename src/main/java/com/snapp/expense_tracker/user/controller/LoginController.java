@@ -1,6 +1,6 @@
 package com.snapp.expense_tracker.user.controller;
 
-import com.snapp.expense_tracker.user.UserService;
+import com.snapp.expense_tracker.user.service.UserService;
 import com.snapp.expense_tracker.user.model.LoginRequest;
 import com.snapp.expense_tracker.user.model.LoginResponse;
 import org.springframework.web.bind.annotation.PostMapping;

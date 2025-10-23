@@ -1,9 +1,12 @@
-package com.snapp.expense_tracker.user.domin;
+package com.snapp.expense_tracker.user.service;
 
-import com.snapp.expense_tracker.user.UserService;
+import com.snapp.expense_tracker.user.domin.User;
 import com.snapp.expense_tracker.user.model.CreateUserRequest;
 import com.snapp.expense_tracker.user.model.LoginRequest;
 import com.snapp.expense_tracker.user.model.LoginResponse;
+import com.snapp.expense_tracker.user.repository.BadCredentialsException;
+import com.snapp.expense_tracker.user.repository.UserRepository;
+import com.snapp.expense_tracker.user.repository.UsernameAlreadyExistedException;
 import com.snapp.expense_tracker.user.util.JWTUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

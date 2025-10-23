@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.user.domin;
+package com.snapp.expense_tracker.user.repository;
 
 import com.snapp.expense_tracker.common.exception.UnauthirizedRestApiException;
 
