@@ -122,3 +122,67 @@ expense-tracker/
 ```
 
 ---
+
+### 📘 Example Usage
+**Create a user**
+```
+Post /api/auth/signup
+{
+  "firstName": "foo",
+  "surname": "bar",
+  "username": "foobar",
+  "password": "12345678"
+}
+```
+
+**Login**
+```
+Post /api/auth/login
+{
+  "username": "f.bar",
+  "password": "12345678"
+}
+```
+
+**Get category**
+```
+Get api/lookup/category/search?text=foo
+```
+
+**Get subcategory**
+```
+Get api/lookup/subcategory/search/{categoryId}?text=foo
+```
+
+**Add an expense**
+```
+Post /api/cost/expense
+{
+  "categoryId": 2,
+  "categoryName": "Food",
+  "subCategoryId": 7,
+  "subCategoryName": "Restaurants",
+  "amount": 44
+}
+```
+
+**Define a rule**
+```
+Post /api/report/rule
+{
+  "description": "Maybe walking have a good effect in you health",
+  "categoryId": 3,
+  "categoryName": "Transportation",
+  "subcategoryId": 10,
+  "subcategoryName": "Taxi",
+  "timeUnit": "WEEK",
+  "timePeriod": 1,
+  "operator": "GREATER_THAN",
+  "threshold": 50.24
+}
+```
+
+**Get In-app notification**
+```
+GET /api/notification
+```
