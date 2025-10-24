@@ -1,4 +1,4 @@
 package com.snapp.expense_tracker.user.model;
 
-public record LoginResponse(String accessToken, String refreshToken) {
+public record LoginResponse(String accessToken, String refreshToken, Long userId) {
 }

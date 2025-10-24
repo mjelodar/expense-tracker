@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class UserService {
@@ -45,14 +47,14 @@ public class UserService {
         User user = userRepository.findByUsername(request.username()).orElseThrow(BadCredentialsException::new);
         if (!passwordEncoder.matches(request.password(), user.getPassword()))
             throw new BadCredentialsException();
-        long accessTokenTtl = 15 * 60 * 1000L; // 15 minutes
+        long accessTokenTtl = 30 * 60 * 1000L; // 15 minutes
         long refreshTokenTtl = 7 * 24 * 60 * 60 * 1000L; // 7 days
 
         String accessToken = JWTUtil.generateToken(user.getUsername(), user.getId(), accessTokenTtl);
-        String refreshToken = JWTUtil.generateToken(user.getUsername(), user.getId(), refreshTokenTtl);
+        String refreshToken = UUID.randomUUID().toString().replace("-", "");
 
         refreshTokenService.saveRefreshToken(user.getId(), refreshToken, refreshTokenTtl);
 
-        return new LoginResponse(accessToken, refreshToken);
+        return new LoginResponse(accessToken, refreshToken, user.getId());
     }
 }
