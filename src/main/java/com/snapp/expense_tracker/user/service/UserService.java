@@ -1,13 +1,16 @@
 package com.snapp.expense_tracker.user.service;
 
+import com.snapp.expense_tracker.common.util.SecurityUtil;
 import com.snapp.expense_tracker.user.domin.User;
 import com.snapp.expense_tracker.user.model.CreateUserRequest;
 import com.snapp.expense_tracker.user.model.LoginRequest;
 import com.snapp.expense_tracker.user.model.LoginResponse;
+import com.snapp.expense_tracker.user.model.RefreshRequest;
 import com.snapp.expense_tracker.user.repository.BadCredentialsException;
 import com.snapp.expense_tracker.user.repository.UserRepository;
 import com.snapp.expense_tracker.user.repository.UsernameAlreadyExistedException;
 import com.snapp.expense_tracker.user.util.JWTUtil;
+import com.snapp.expense_tracker.user.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RefreshTokenService refreshTokenService;
+    private final RedisUtil redisUtil;
     private final JWTUtil jwtUtil;
 
     @Value("${app.access-token-ttl}")
@@ -31,11 +34,11 @@ public class UserService {
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       RefreshTokenService refreshTokenService,
+                       RedisUtil redisUtil,
                        JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.refreshTokenService = refreshTokenService;
+        this.redisUtil = redisUtil;
         this.jwtUtil = jwtUtil;
     }
 
@@ -58,11 +61,34 @@ public class UserService {
         if (!passwordEncoder.matches(request.password(), user.getPassword()))
             throw new BadCredentialsException();
 
-        String accessToken = jwtUtil.generateToken(user.getUsername(), user.getId(), accessTokenTTL);
-        String refreshToken = UUID.randomUUID().toString().replace("-", "");
-
-        refreshTokenService.saveRefreshToken(user.getId(), refreshToken, refreshTokenTTL);
+        String accessToken = createAccessToken(user);
+        String refreshToken = createRefreshToken(user);
 
         return new LoginResponse(accessToken, refreshToken, user.getId());
+    }
+
+    public void logout(){
+        //TODO handle current valid accessToken
+        redisUtil.deleteRefreshToken(SecurityUtil.getUserId());
+    }
+
+    public LoginResponse refreshToken(RefreshRequest request) {
+        User user = userRepository.findById(request.userId()).orElseThrow(BadCredentialsException::new);
+        redisUtil.validateRefreshToken(SecurityUtil.getUserId(), request.refreshToken());
+
+        String accessToken = createAccessToken(user);
+        String newRefreshToken = createRefreshToken(user);
+
+        return new LoginResponse(accessToken, newRefreshToken, user.getId());
+    }
+
+    private String createAccessToken(User user){
+        return jwtUtil.generateToken(user.getUsername(), user.getId(), accessTokenTTL);
+    }
+
+    private String createRefreshToken(User user){
+        String refreshToken = UUID.randomUUID().toString().replace("-", "");
+        redisUtil.saveRefreshToken(user.getId(), refreshToken, refreshTokenTTL);
+        return refreshToken;
     }
 }

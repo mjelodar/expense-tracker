@@ -1,16 +1,17 @@
-package com.snapp.expense_tracker.user.service;
+package com.snapp.expense_tracker.user.util;
 
+import com.snapp.expense_tracker.user.exception.InvalidRefreshTokenException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class RefreshTokenService {
+public class RedisUtil {
     private final String AUTHENTICATION_REFRESH_PREFIX = "authentication:refresh:";
     private final StringRedisTemplate redisTemplate;
 
-    public RefreshTokenService(StringRedisTemplate redisTemplate) {
+    public RedisUtil(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -19,10 +20,11 @@ public class RefreshTokenService {
         redisTemplate.opsForValue().set(key, refreshToken, durationMs, TimeUnit.MILLISECONDS);
     }
 
-    public boolean validateRefreshToken(Long userId, String refreshToken) {
+    public void validateRefreshToken(Long userId, String refreshToken) {
         String key = AUTHENTICATION_REFRESH_PREFIX + userId;
         String storedToken = redisTemplate.opsForValue().get(key);
-        return storedToken != null && storedToken.equals(refreshToken);
+        if (storedToken == null || !storedToken.equals(refreshToken))
+            throw new InvalidRefreshTokenException();
     }
 
     public void deleteRefreshToken(Long userId) {
