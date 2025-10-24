@@ -118,6 +118,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.snapp.expense_tracker.ExpenseTrackerApplication</mainClass>
+                </configuration>
 			</plugin>
 		</plugins>
 	</build>
