@@ -8,6 +8,7 @@ import com.snapp.expense_tracker.user.repository.BadCredentialsException;
 import com.snapp.expense_tracker.user.repository.UserRepository;
 import com.snapp.expense_tracker.user.repository.UsernameAlreadyExistedException;
 import com.snapp.expense_tracker.user.util.JWTUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
+
+    @Value("${app.access-token-ttl}")
+    private Long accessTokenTTL;
+
+    @Value("${app.refresh-token-ttl}")
+    private Long refreshTokenTTL;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
@@ -47,13 +54,11 @@ public class UserService {
         User user = userRepository.findByUsername(request.username()).orElseThrow(BadCredentialsException::new);
         if (!passwordEncoder.matches(request.password(), user.getPassword()))
             throw new BadCredentialsException();
-        long accessTokenTtl = 30 * 60 * 1000L; // 15 minutes
-        long refreshTokenTtl = 7 * 24 * 60 * 60 * 1000L; // 7 days
 
-        String accessToken = JWTUtil.generateToken(user.getUsername(), user.getId(), accessTokenTtl);
+        String accessToken = JWTUtil.generateToken(user.getUsername(), user.getId(), accessTokenTTL);
         String refreshToken = UUID.randomUUID().toString().replace("-", "");
 
-        refreshTokenService.saveRefreshToken(user.getId(), refreshToken, refreshTokenTtl);
+        refreshTokenService.saveRefreshToken(user.getId(), refreshToken, refreshTokenTTL);
 
         return new LoginResponse(accessToken, refreshToken, user.getId());
     }

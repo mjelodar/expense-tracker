@@ -55,3 +55,8 @@ logging:
     org.springframework.transaction: DEBUG
     org.springframework.orm.jpa.JpaTransactionManager: DEBUG
     org.springframework.transaction.interceptor: DEBUG
+
+app:
+  access-token-ttl: 1800000
+  refresh-token-ttl: 604800000
+  secret: ${secret}
