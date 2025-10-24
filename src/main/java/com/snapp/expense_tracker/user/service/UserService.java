@@ -21,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
+    private final JWTUtil jwtUtil;
 
     @Value("${app.access-token-ttl}")
     private Long accessTokenTTL;
@@ -30,10 +31,12 @@ public class UserService {
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       RefreshTokenService refreshTokenService) {
+                       RefreshTokenService refreshTokenService,
+                       JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.refreshTokenService = refreshTokenService;
+        this.jwtUtil = jwtUtil;
     }
 
     public void create(CreateUserRequest request) {
@@ -55,7 +58,7 @@ public class UserService {
         if (!passwordEncoder.matches(request.password(), user.getPassword()))
             throw new BadCredentialsException();
 
-        String accessToken = JWTUtil.generateToken(user.getUsername(), user.getId(), accessTokenTTL);
+        String accessToken = jwtUtil.generateToken(user.getUsername(), user.getId(), accessTokenTTL);
         String refreshToken = UUID.randomUUID().toString().replace("-", "");
 
         refreshTokenService.saveRefreshToken(user.getId(), refreshToken, refreshTokenTTL);

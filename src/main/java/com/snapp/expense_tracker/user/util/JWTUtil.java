@@ -13,9 +13,10 @@ import java.util.Date;
 @Component
 public class JWTUtil {
     @Value("${app.secret}")
-    private static String SECRET_KEY;
-    public static String generateToken(String username, Long userId, long expiresIn) {
-        Date expiration = new Date(new Date().getTime() + (expiresIn * 1000));
+    private String SECRET_KEY;
+
+    public String generateToken(String username, Long userId, long expiresIn) {
+        Date expiration = new Date(new Date().getTime() + expiresIn);
         return Jwts.builder().
                 claim("userId", userId).
                 claim("username", username).
