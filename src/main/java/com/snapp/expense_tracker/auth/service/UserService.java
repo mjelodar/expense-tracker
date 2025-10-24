@@ -1,16 +1,16 @@
-package com.snapp.expense_tracker.user.service;
+package com.snapp.expense_tracker.auth.service;
 
 import com.snapp.expense_tracker.common.util.SecurityUtil;
-import com.snapp.expense_tracker.user.domin.User;
-import com.snapp.expense_tracker.user.model.CreateUserRequest;
-import com.snapp.expense_tracker.user.model.LoginRequest;
-import com.snapp.expense_tracker.user.model.LoginResponse;
-import com.snapp.expense_tracker.user.model.RefreshRequest;
-import com.snapp.expense_tracker.user.repository.BadCredentialsException;
-import com.snapp.expense_tracker.user.repository.UserRepository;
-import com.snapp.expense_tracker.user.repository.UsernameAlreadyExistedException;
-import com.snapp.expense_tracker.user.util.JWTUtil;
-import com.snapp.expense_tracker.user.util.RedisUtil;
+import com.snapp.expense_tracker.auth.domin.User;
+import com.snapp.expense_tracker.auth.model.CreateUserRequest;
+import com.snapp.expense_tracker.auth.model.LoginRequest;
+import com.snapp.expense_tracker.auth.model.LoginResponse;
+import com.snapp.expense_tracker.auth.model.RefreshRequest;
+import com.snapp.expense_tracker.auth.repository.BadCredentialsException;
+import com.snapp.expense_tracker.auth.repository.UserRepository;
+import com.snapp.expense_tracker.auth.repository.UsernameAlreadyExistedException;
+import com.snapp.expense_tracker.auth.util.JWTUtil;
+import com.snapp.expense_tracker.auth.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

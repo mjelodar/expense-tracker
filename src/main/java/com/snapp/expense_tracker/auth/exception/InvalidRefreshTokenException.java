@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.user.exception;
+package com.snapp.expense_tracker.auth.exception;
 
 import com.snapp.expense_tracker.common.exception.ForbiddenRestApiException;
 

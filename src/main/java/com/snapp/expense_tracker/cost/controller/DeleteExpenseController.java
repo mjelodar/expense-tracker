@@ -1,9 +1,11 @@
 package com.snapp.expense_tracker.cost.controller;
 
 import com.snapp.expense_tracker.cost.service.ExpenseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Tag(name = "Expense Module")
 public class DeleteExpenseController {
     private final ExpenseService expenseService;
 

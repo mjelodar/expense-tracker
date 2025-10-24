@@ -4,12 +4,14 @@ import com.snapp.expense_tracker.common.util.SecurityUtil;
 import com.snapp.expense_tracker.notification.model.GetNotificationRequest;
 import com.snapp.expense_tracker.notification.model.NotificationView;
 import com.snapp.expense_tracker.notification.service.NotificationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Tag(name = "Notification Module")
 public class SeenNotificationController {
     private final NotificationService notificationService;
 

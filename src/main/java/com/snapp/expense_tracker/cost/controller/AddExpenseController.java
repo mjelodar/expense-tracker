@@ -2,11 +2,13 @@ package com.snapp.expense_tracker.cost.controller;
 
 import com.snapp.expense_tracker.cost.model.AddExpenseRequest;
 import com.snapp.expense_tracker.cost.service.ExpenseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Expense Module")
 public class AddExpenseController {
     private final ExpenseService expenseService;
 

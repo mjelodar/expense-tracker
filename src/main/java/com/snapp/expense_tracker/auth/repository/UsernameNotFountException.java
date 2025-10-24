@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.user.repository;
+package com.snapp.expense_tracker.auth.repository;
 
 import com.snapp.expense_tracker.common.exception.RequestNotFoundException;
 

@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.user.domin;
+package com.snapp.expense_tracker.auth.domin;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

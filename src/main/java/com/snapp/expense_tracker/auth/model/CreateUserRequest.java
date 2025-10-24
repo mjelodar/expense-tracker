@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.user.model;
+package com.snapp.expense_tracker.auth.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

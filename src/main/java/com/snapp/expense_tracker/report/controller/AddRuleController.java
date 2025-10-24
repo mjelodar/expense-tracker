@@ -2,11 +2,13 @@ package com.snapp.expense_tracker.report.controller;
 
 import com.snapp.expense_tracker.report.service.RuleService;
 import com.snapp.expense_tracker.report.model.AddRuleRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Report Module")
 public class AddRuleController {
     private final RuleService ruleService;
 

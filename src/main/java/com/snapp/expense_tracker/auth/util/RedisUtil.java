@@ -1,6 +1,6 @@
-package com.snapp.expense_tracker.user.util;
+package com.snapp.expense_tracker.auth.util;
 
-import com.snapp.expense_tracker.user.exception.InvalidRefreshTokenException;
+import com.snapp.expense_tracker.auth.exception.InvalidRefreshTokenException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 

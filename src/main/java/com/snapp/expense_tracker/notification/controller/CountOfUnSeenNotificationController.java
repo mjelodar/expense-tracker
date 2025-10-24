@@ -3,10 +3,12 @@ package com.snapp.expense_tracker.notification.controller;
 import com.snapp.expense_tracker.common.model.SingleValueResponse;
 import com.snapp.expense_tracker.common.util.SecurityUtil;
 import com.snapp.expense_tracker.notification.service.NotificationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Notification Module")
 public class CountOfUnSeenNotificationController {
     private final NotificationService notificationService;
 

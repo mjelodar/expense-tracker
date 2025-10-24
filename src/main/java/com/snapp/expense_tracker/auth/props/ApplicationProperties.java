@@ -1,4 +1,4 @@
-package com.snapp.expense_tracker.user.props;
+package com.snapp.expense_tracker.auth.props;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

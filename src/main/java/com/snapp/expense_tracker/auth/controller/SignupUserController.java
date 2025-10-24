@@ -1,12 +1,14 @@
-package com.snapp.expense_tracker.user.controller;
+package com.snapp.expense_tracker.auth.controller;
 
-import com.snapp.expense_tracker.user.model.CreateUserRequest;
-import com.snapp.expense_tracker.user.service.UserService;
+import com.snapp.expense_tracker.auth.model.CreateUserRequest;
+import com.snapp.expense_tracker.auth.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Authentication Module")
 public class SignupUserController {
     private final UserService userService;
 

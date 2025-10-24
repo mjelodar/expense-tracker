@@ -1,6 +1,6 @@
-package com.snapp.expense_tracker.user.repository;
+package com.snapp.expense_tracker.auth.repository;
 
-import com.snapp.expense_tracker.user.domin.User;
+import com.snapp.expense_tracker.auth.domin.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
