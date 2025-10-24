@@ -2,12 +2,8 @@ package com.snapp.expense_tracker.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,35 +20,15 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
-    private final Environment env;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(Environment env,
-                          JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.env = env;
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> {
-            web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
-
-            if (!env.acceptsProfiles(Profiles.of("prod"))) {
-                web.ignoring()
-                        .requestMatchers("/swagger-ui/index.html")
-                        .requestMatchers("/swagger-ui.html")
-                        .requestMatchers("/swagger-ui/**")
-                        .requestMatchers("/v3/api-docs/swagger-config")
-                        .requestMatchers("/v3/api-docs")
-                        .requestMatchers("/swagger-resources/**");
-            }
-        };
     }
 
     @Bean
