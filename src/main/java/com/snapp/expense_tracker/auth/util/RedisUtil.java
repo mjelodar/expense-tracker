@@ -17,13 +17,13 @@ public class RedisUtil {
 
     public void saveRefreshToken(Long userId, String refreshToken, long durationMs) {
         String key = AUTHENTICATION_REFRESH_PREFIX + userId;
-        redisTemplate.opsForValue().set(key, refreshToken, durationMs, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(key, HashUtil.sha256(refreshToken), durationMs, TimeUnit.MILLISECONDS);
     }
 
     public void validateRefreshToken(Long userId, String refreshToken) {
         String key = AUTHENTICATION_REFRESH_PREFIX + userId;
         String storedToken = redisTemplate.opsForValue().get(key);
-        if (storedToken == null || !storedToken.equals(refreshToken))
+        if (storedToken == null || !storedToken.equals(HashUtil.sha256(refreshToken)))
             throw new InvalidRefreshTokenException();
     }
 

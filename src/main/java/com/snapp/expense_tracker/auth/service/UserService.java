@@ -74,7 +74,7 @@ public class UserService {
 
     public LoginResponse refreshToken(RefreshRequest request) {
         User user = userRepository.findById(request.userId()).orElseThrow(BadCredentialsException::new);
-        redisUtil.validateRefreshToken(SecurityUtil.getUserId(), request.refreshToken());
+        redisUtil.validateRefreshToken(request.userId(), request.refreshToken());
 
         String accessToken = createAccessToken(user);
         String newRefreshToken = createRefreshToken(user);
