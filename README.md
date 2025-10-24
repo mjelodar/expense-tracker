@@ -56,3 +56,69 @@ docker build -t expense-tracker .
 Run the application
 docker run -d -p 8080:8080 --name expense-tracker expense-tracker
 ```
+
+---
+### 🗂️ Project Structure
+
+```
+expense-tracker/
+├── src
+│     └── main
+│           ├── java
+│           │     └── com
+│           │         └── snapp
+│           │             └── expense_tracker
+│           │                 ├── auth
+│           │                 │     ├── controller   # REST controllers
+│           │                 │     ├── domin        # Entities
+│           │                 │     ├── exception    # Business Exceptions
+│           │                 │     ├── model        # Views, DTOs
+│           │                 │     ├── props        # Application properties
+│           │                 │     ├── repository   # JPA repositories
+│           │                 │     ├── service      # Business logic
+│           │                 │     └── util         # Utilities (JwtUtil, RedisUtil, ...)
+│           │                 ├── common
+│           │                 │     ├── config       # Application Configuration (Security config, ..)
+│           │                 │     ├── enums        # Shared enums
+│           │                 │     ├── event        # Shared events
+│           │                 │     ├── exception    # Global exception handling
+│           │                 │     ├── model        # Shared DTOs
+│           │                 │     └── util         # Shared Utilities
+│           │                 ├── cost
+│           │                 │     ├── controller
+│           │                 │     ├── domain
+│           │                 │     ├── model
+│           │                 │     │     └── mapper
+│           │                 │     ├── repository
+│           │                 │     └── service
+│           │                 ├── lookup
+│           │                 │     ├── controller
+│           │                 │     ├── domain
+│           │                 │     ├── model
+│           │                 │     ├── repository
+│           │                 │     └── service
+│           │                 ├── notification
+│           │                 │     ├── controller
+│           │                 │     ├── domain
+│           │                 │     ├── eventHandler
+│           │                 │     ├── exception
+│           │                 │     ├── model
+│           │                 │     │     └── mapper
+│           │                 │     ├── repository
+│           │                 │     └── service
+│           │                 └── report
+│           │                     ├── controller
+│           │                     ├── domain
+│           │                     ├── eventHandler
+│           │                     ├── exception
+│           │                     ├── model
+│           │                     │     └── mapper
+│           │                     ├── repository
+│           │                     ├── scheduler
+│           │                     └── service
+│           └── resources
+│               └── db
+│                   └── migration
+```
+
+---
