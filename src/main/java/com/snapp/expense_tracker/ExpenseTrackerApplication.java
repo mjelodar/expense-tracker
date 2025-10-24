@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class ExpenseTrackerApplication {
 
-	static void main(String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(ExpenseTrackerApplication.class, args);
 	}
 
