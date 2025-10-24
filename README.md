@@ -2,7 +2,9 @@
 
 **ExpenseTracker** is a personal finance management application built with Spring Boot, designed to help users record, categorize, and analyze their spending habits.
 With support for custom categories, reporting rules, and notifications, ExpenseTracker empowers users to take control of their expenses efficiently.
+
 ---
+
 ### 🧩 Features
 
 * 📊 **Expense Tracking** — Record daily spending with amount, date, and description.

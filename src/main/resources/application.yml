@@ -44,8 +44,13 @@ spring:
 springdoc:
   api-docs:
     enabled: true
+    path: /v3/api-docs
   swagger-ui:
     enabled: true
+    path: /swagger-ui.html
+    display-request-duration: true
+    operations-sorter: method
+    tags-sorter: alpha
 
 logging:
   level:
@@ -60,3 +65,4 @@ app:
   access-token-ttl: 1800000
   refresh-token-ttl: 604800000
   secret: ${secret}
+
