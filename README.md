@@ -56,10 +56,10 @@ git clone https://github.com/mjelodar/expense-tracker.git
 
 cd expense-tracker
 
-Build the application
+#Build the application
 docker compose build
 
-Run the application
+#Run the application
 docker compose up -d
 ```
 
@@ -138,7 +138,7 @@ Post /api/auth/signup
 {
   "firstName": "foo",
   "surname": "bar",
-  "username": "foobar",
+  "username": "f.bar",
   "password": "12345678"
 }
 ```
