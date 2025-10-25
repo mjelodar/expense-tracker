@@ -26,13 +26,13 @@ public class LogDuration {
         String requestURI = request.getRequestURI();
         try {
             result = proceedingJoinPoint.proceed();
+            stopWatch.stop();
             logger.info(LOG_PATTERN.formatted(stopWatch.getTotalTimeMillis(), requestURI));
             return result;
         }catch (Throwable throwable){
+            stopWatch.stop();
             logger.error(LOG_PATTERN.formatted(stopWatch.getTotalTimeMillis(), requestURI), throwable);
             throw throwable;
-        }finally {
-            stopWatch.stop();
         }
     }
 }

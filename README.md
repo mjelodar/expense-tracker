@@ -26,15 +26,16 @@ With support for custom categories, reporting rules, and notifications, ExpenseT
 ---
 
 ### 🏗️ Tech Stack
-| Layer                       | Technology                  |
-|:----------------------------|:----------------------------|
-| **Backend**                 | Spring Boot (Java 21)       |
-| **Database**                | MySQL / Redis               |
-| **Build Tool**              | Maven                       |
-| **Containerization**        | Docker                      |
-| **ORM**                     | Spring Data JPA / Hibernate |
-| **Security**                | Spring Security (JWT)       |
-| **Notifications**           | In-App notification         |
+| Layer                | Technology                  |
+|:---------------------|:----------------------------|
+| **Backend**          | Spring Boot (Java 21)       |
+| **Database**         | MySQL / Redis               |
+| **Build Tool**       | Maven                       |
+| **Containerization** | Docker                      |
+| **ORM**              | Spring Data JPA / Hibernate |
+| **Security**         | Spring Security (JWT)       |
+| **Logging**          | AOP                         |
+| **Notifications**    | In-App (Internal event)     |
 
 ---
 ### 🚀 Getting Started
@@ -43,21 +44,26 @@ With support for custom categories, reporting rules, and notifications, ExpenseT
 Make sure you have installed:
 * Java 21
 * Maven 3.9+
-* Docker
+* Docker/Docker-compose
 ---
 
 ### 🧱 Build & Run Locally
 
 ```Clone the repository
-git clone https://github.com/your-username/expense-tracker.git
+git clone git@github.com:mjelodar/expense-tracker.git
+or
+git clone https://github.com/mjelodar/expense-tracker.git
+
 cd expense-tracker
 
 Build the application
-docker build -t expense-tracker .
+docker compose build
 
 Run the application
-docker run -d -p 8080:8080 --name expense-tracker expense-tracker
+docker compose up -d
 ```
+
+Now, Open http://127.0.0.1:8080/swagger-ui/index.html in your browser
 
 ---
 ### 🗂️ Project Structure
