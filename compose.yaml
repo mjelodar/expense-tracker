@@ -1,36 +1,19 @@
 version: "3.9"
 
 services:
-  expense-tracker:
-    image: expense-tracker
-    container_name: expense-tracker
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      db_host: ${DB_HOST}
-      db_name: ${DB_NAME}
-      db_port: ${DB_PORT}
-      db_username: ${DB_USERNAME}
-      db_password: ${DB_PASSWORD}
-      redis_host: ${REDIS_HOST}
-      redis_port: ${REDIS_PORT}
-      redis_password: ${REDIS_PASSWORD}
-      secret: ${SECRET}
-    depends_on:
-      - db
-      - redis
-    networks:
-      - expense-network
-
   db:
     image: mysql:8.0
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: my-secret
+      MYSQL_DATABASE: expense_tracker
     ports:
-      - "3306:3306"
+      - "13306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -40,12 +23,34 @@ services:
     image: redis:7.2
     container_name: redis-server
     command: >
-      redis-server --requirepass ${REDIS_PASSWORD}
+      redis-server --requirepass my-redis
     ports:
-      - "6379:6379"
+      - "16379:6379"
     networks:
       - expense-network
 
+  expense-tracker:
+    image: expense-tracker
+    container_name: expense-tracker
+    build: .
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      db_host: db
+      db_name: expense_tracker
+      db_port: 3306
+      db_username: root
+      db_password: my-secret
+      redis_host: redis
+      redis_port: 6379
+      redis_password: my-redis
+      secret: F867KS86JD867HF86KF04985926D96C90030DD58429D2751AC1BDB645BY654C0123456789ABCDEF0123456789ABCDEF
+    depends_on:
+      - db
+      - redis
+    networks:
+      - expense-network
 networks:
   expense-network:
 
